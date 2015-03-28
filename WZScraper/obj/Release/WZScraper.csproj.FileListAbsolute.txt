@@ -1,0 +1,9 @@
+C:\Users\Aurel\Documents\GitHub\LeagueSharp\WZScraper\WZScraper\bin\Release\WZScraper.exe.config
+C:\Users\Aurel\Documents\GitHub\LeagueSharp\WZScraper\WZScraper\bin\Release\WZScraper.exe
+C:\Users\Aurel\Documents\GitHub\LeagueSharp\WZScraper\WZScraper\bin\Release\WZScraper.pdb
+C:\Users\Aurel\Documents\GitHub\LeagueSharp\WZScraper\WZScraper\bin\Release\MetroFramework.dll
+C:\Users\Aurel\Documents\GitHub\LeagueSharp\WZScraper\WZScraper\obj\Release\WZScraper.MainForm.resources
+C:\Users\Aurel\Documents\GitHub\LeagueSharp\WZScraper\WZScraper\obj\Release\WZScraper.Properties.Resources.resources
+C:\Users\Aurel\Documents\GitHub\LeagueSharp\WZScraper\WZScraper\obj\Release\WZScraper.csproj.GenerateResource.Cache
+C:\Users\Aurel\Documents\GitHub\LeagueSharp\WZScraper\WZScraper\obj\Release\WZScraper.exe
+C:\Users\Aurel\Documents\GitHub\LeagueSharp\WZScraper\WZScraper\obj\Release\WZScraper.pdb

@@ -1,0 +1,20 @@
+C:\Users\Aurel\AppData\Local\Temporary Projects\WZScraper\bin\Debug\WZScraper.exe.config
+C:\Users\Aurel\AppData\Local\Temporary Projects\WZScraper\bin\Debug\WZScraper.exe
+C:\Users\Aurel\AppData\Local\Temporary Projects\WZScraper\bin\Debug\WZScraper.pdb
+C:\Users\Aurel\AppData\Local\Temporary Projects\WZScraper\bin\Debug\MetroFramework.dll
+C:\Users\Aurel\AppData\Local\Temporary Projects\WZScraper\obj\Debug\WZScraper.csprojResolveAssemblyReference.cache
+C:\Users\Aurel\AppData\Local\Temporary Projects\WZScraper\obj\Debug\WZScraper.MainForm.resources
+C:\Users\Aurel\AppData\Local\Temporary Projects\WZScraper\obj\Debug\WZScraper.Properties.Resources.resources
+C:\Users\Aurel\AppData\Local\Temporary Projects\WZScraper\obj\Debug\WZScraper.csproj.GenerateResource.Cache
+C:\Users\Aurel\AppData\Local\Temporary Projects\WZScraper\obj\Debug\WZScraper.exe
+C:\Users\Aurel\AppData\Local\Temporary Projects\WZScraper\obj\Debug\WZScraper.pdb
+C:\Users\Aurel\Documents\GitHub\LeagueSharp\WZScraper\WZScraper\bin\Debug\WZScraper.exe.config
+C:\Users\Aurel\Documents\GitHub\LeagueSharp\WZScraper\WZScraper\obj\Debug\WZScraper.exe
+C:\Users\Aurel\Documents\GitHub\LeagueSharp\WZScraper\WZScraper\obj\Debug\WZScraper.pdb
+C:\Users\Aurel\Documents\GitHub\LeagueSharp\WZScraper\WZScraper\bin\Debug\WZScraper.exe
+C:\Users\Aurel\Documents\GitHub\LeagueSharp\WZScraper\WZScraper\bin\Debug\WZScraper.pdb
+C:\Users\Aurel\Documents\GitHub\LeagueSharp\WZScraper\WZScraper\bin\Debug\MetroFramework.dll
+C:\Users\Aurel\Documents\GitHub\LeagueSharp\WZScraper\WZScraper\obj\Debug\WZScraper.MainForm.resources
+C:\Users\Aurel\Documents\GitHub\LeagueSharp\WZScraper\WZScraper\obj\Debug\WZScraper.Properties.Resources.resources
+C:\Users\Aurel\Documents\GitHub\LeagueSharp\WZScraper\WZScraper\obj\Debug\WZScraper.csproj.GenerateResource.Cache
+C:\Users\Aurel\Documents\GitHub\LeagueSharp\WZScraper\WZScraper\obj\Debug\WZScraper.csprojResolveAssemblyReference.cache
