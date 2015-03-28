@@ -35,6 +35,10 @@ namespace WZScraper
             this.cbRegion = new MetroFramework.Controls.MetroComboBox();
             this.btScrape = new MetroFramework.Controls.MetroButton();
             this.ltbUsernames = new System.Windows.Forms.ListBox();
+            this.contextMenuListBox = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clearAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lbCount = new System.Windows.Forms.Label();
             this.lbStartPage = new MetroFramework.Controls.MetroTextBox();
             this.lbStopPage = new MetroFramework.Controls.MetroTextBox();
@@ -44,10 +48,6 @@ namespace WZScraper
             this.btStop = new MetroFramework.Controls.MetroButton();
             this.loadingSpinner = new MetroFramework.Controls.MetroProgressSpinner();
             this.cbSite = new MetroFramework.Controls.MetroComboBox();
-            this.contextMenuListBox = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.clearAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.metroRadioButton1 = new MetroFramework.Controls.MetroRadioButton();
             this.metroRadioButton2 = new MetroFramework.Controls.MetroRadioButton();
             this.metroRadioButton3 = new MetroFramework.Controls.MetroRadioButton();
@@ -78,7 +78,7 @@ namespace WZScraper
             this.cbRegion.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.cbRegion.UseSelectable = true;
             this.cbRegion.UseStyleColors = true;
-            this.cbRegion.SelectedIndexChanged += new System.EventHandler(this.cbRegion_SelectedIndexChanged);
+            this.cbRegion.SelectedIndexChanged += new System.EventHandler(this.CbRegionSelectedIndexChanged);
             // 
             // btScrape
             // 
@@ -88,7 +88,7 @@ namespace WZScraper
             this.btScrape.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.btScrape.UseSelectable = true;
             this.btScrape.UseStyleColors = true;
-            this.btScrape.Click += new System.EventHandler(this.btScrape_Click);
+            this.btScrape.Click += new System.EventHandler(this.BtScrapeClick);
             // 
             // ltbUsernames
             // 
@@ -98,6 +98,33 @@ namespace WZScraper
             resources.ApplyResources(this.ltbUsernames, "ltbUsernames");
             this.ltbUsernames.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(170)))), ((int)(((byte)(173)))));
             this.ltbUsernames.Name = "ltbUsernames";
+            // 
+            // contextMenuListBox
+            // 
+            this.contextMenuListBox.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.copyToolStripMenuItem,
+            this.deleteToolStripMenuItem,
+            this.clearAllToolStripMenuItem});
+            this.contextMenuListBox.Name = "contextMenuListBox";
+            resources.ApplyResources(this.contextMenuListBox, "contextMenuListBox");
+            // 
+            // copyToolStripMenuItem
+            // 
+            this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
+            resources.ApplyResources(this.copyToolStripMenuItem, "copyToolStripMenuItem");
+            this.copyToolStripMenuItem.Click += new System.EventHandler(this.CopyToolStripMenuItemClick);
+            // 
+            // deleteToolStripMenuItem
+            // 
+            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+            resources.ApplyResources(this.deleteToolStripMenuItem, "deleteToolStripMenuItem");
+            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.DeleteToolStripMenuItemClick);
+            // 
+            // clearAllToolStripMenuItem
+            // 
+            this.clearAllToolStripMenuItem.Name = "clearAllToolStripMenuItem";
+            resources.ApplyResources(this.clearAllToolStripMenuItem, "clearAllToolStripMenuItem");
+            this.clearAllToolStripMenuItem.Click += new System.EventHandler(this.ClearAllToolStripMenuItemClick);
             // 
             // lbCount
             // 
@@ -118,8 +145,8 @@ namespace WZScraper
             this.lbStartPage.Style = MetroFramework.MetroColorStyle.Teal;
             this.lbStartPage.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.lbStartPage.UseSelectable = true;
-            this.lbStartPage.TextChanged += new System.EventHandler(this.lbStartPage_TextChanged);
-            this.lbStartPage.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.lbStartPage_KeyPress);
+            this.lbStartPage.TextChanged += new System.EventHandler(this.LbStartPageTextChanged);
+            this.lbStartPage.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LbStartPageKeyPress);
             // 
             // lbStopPage
             // 
@@ -134,8 +161,8 @@ namespace WZScraper
             this.lbStopPage.Style = MetroFramework.MetroColorStyle.Teal;
             this.lbStopPage.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.lbStopPage.UseSelectable = true;
-            this.lbStopPage.TextChanged += new System.EventHandler(this.lbStopPage_TextChanged);
-            this.lbStopPage.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.lbStopPage_KeyPress);
+            this.lbStopPage.TextChanged += new System.EventHandler(this.LbStopPageTextChanged);
+            this.lbStopPage.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LbStopPageKeyPress);
             // 
             // lbSeperator
             // 
@@ -154,7 +181,7 @@ namespace WZScraper
             // stopwatchTimer
             // 
             this.stopwatchTimer.Interval = 10;
-            this.stopwatchTimer.Tick += new System.EventHandler(this.stopwatchTimer_Tick);
+            this.stopwatchTimer.Tick += new System.EventHandler(this.StopwatchTimerTick);
             // 
             // btStop
             // 
@@ -164,7 +191,7 @@ namespace WZScraper
             this.btStop.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.btStop.UseSelectable = true;
             this.btStop.UseStyleColors = true;
-            this.btStop.Click += new System.EventHandler(this.btStop_Click);
+            this.btStop.Click += new System.EventHandler(this.BtStopClick);
             // 
             // loadingSpinner
             // 
@@ -191,34 +218,7 @@ namespace WZScraper
             this.cbSite.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.cbSite.UseSelectable = true;
             this.cbSite.UseStyleColors = true;
-            this.cbSite.SelectedIndexChanged += new System.EventHandler(this.cbSite_SelectedIndexChanged);
-            // 
-            // contextMenuListBox
-            // 
-            this.contextMenuListBox.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.copyToolStripMenuItem,
-            this.deleteToolStripMenuItem,
-            this.clearAllToolStripMenuItem});
-            this.contextMenuListBox.Name = "contextMenuListBox";
-            resources.ApplyResources(this.contextMenuListBox, "contextMenuListBox");
-            // 
-            // copyToolStripMenuItem
-            // 
-            this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-            resources.ApplyResources(this.copyToolStripMenuItem, "copyToolStripMenuItem");
-            this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
-            // 
-            // deleteToolStripMenuItem
-            // 
-            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            resources.ApplyResources(this.deleteToolStripMenuItem, "deleteToolStripMenuItem");
-            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
-            // 
-            // clearAllToolStripMenuItem
-            // 
-            this.clearAllToolStripMenuItem.Name = "clearAllToolStripMenuItem";
-            resources.ApplyResources(this.clearAllToolStripMenuItem, "clearAllToolStripMenuItem");
-            this.clearAllToolStripMenuItem.Click += new System.EventHandler(this.clearAllToolStripMenuItem_Click);
+            this.cbSite.SelectedIndexChanged += new System.EventHandler(this.CbSiteSelectedIndexChanged);
             // 
             // metroRadioButton1
             // 
@@ -243,7 +243,7 @@ namespace WZScraper
             this.metroRadioButton3.Style = MetroFramework.MetroColorStyle.Teal;
             this.metroRadioButton3.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroRadioButton3.UseSelectable = true;
-            this.metroRadioButton3.CheckedChanged += new System.EventHandler(this.metroRadioButton3_CheckedChanged);
+            this.metroRadioButton3.CheckedChanged += new System.EventHandler(this.MetroRadioButton3CheckedChanged);
             // 
             // btImport
             // 
@@ -253,7 +253,7 @@ namespace WZScraper
             this.btImport.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.btImport.UseSelectable = true;
             this.btImport.UseStyleColors = true;
-            this.btImport.Click += new System.EventHandler(this.btImport_Click);
+            this.btImport.Click += new System.EventHandler(this.BtImportClick);
             // 
             // btExport
             // 
@@ -263,7 +263,7 @@ namespace WZScraper
             this.btExport.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.btExport.UseSelectable = true;
             this.btExport.UseStyleColors = true;
-            this.btExport.Click += new System.EventHandler(this.btExport_Click);
+            this.btExport.Click += new System.EventHandler(this.BtExportClick);
             // 
             // MainForm
             // 
@@ -295,7 +295,8 @@ namespace WZScraper
             this.ShadowType = MetroFramework.Forms.MetroFormShadowType.DropShadow;
             this.Style = MetroFramework.MetroColorStyle.Teal;
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainFormFormClosing);
+            this.Load += new System.EventHandler(this.MainFormLoad);
             this.contextMenuListBox.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();

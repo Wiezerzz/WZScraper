@@ -22,16 +22,17 @@ namespace WZScraper
             InitializeComponent();
         }
 
-        private string LadderURL = "";
-        private int curSiteID;
+        private string _ladderUrl = "";
+        private int _curSiteId;
 
         CancellationTokenSource _cts;
         Stopwatch stopwatch = new Stopwatch();
-        List<string> passList = new List<string>(); 
+        List<string> passList = new List<string>();
 
-        private void btScrape_Click(object sender, EventArgs e)
+
+        #region Scraping
+        private void BtScrapeClick(object sender, EventArgs e)
         {
-            MessageBox.Show(Application.ProductVersion);
             //Stupid visual focus problem with buttons.
             lbCount.Focus();
 
@@ -77,7 +78,7 @@ namespace WZScraper
             stopwatchTimer.Enabled = true;
 
             //Start the async thread.
-            Thread mainThread = new Thread(new ThreadStart(StartScraping));
+            Thread mainThread = new Thread(StartScraping);
             mainThread.Start();
         }
 
@@ -109,7 +110,7 @@ namespace WZScraper
             for (int i = 0; i < int.Parse(lbStopPage.Text) - int.Parse(lbStartPage.Text) + 1; i++)
             {
                 var i1 = int.Parse(lbStartPage.Text) + i;
-                tasks[i] = Task.Factory.StartNew(() => ScrapePage(i1, curSiteID, _cts.Token));
+                tasks[i] = Task.Factory.StartNew(() => ScrapePage(i1, _curSiteId, _cts.Token));
             }
 
             //---Wait till all the tasks are completed, then continue.
@@ -148,345 +149,92 @@ namespace WZScraper
 
                     if (siteType == 0 || siteType == 1)
                     {
-                        MatchCollection Matches = null;
+                        MatchCollection matches = null;
                         if (siteType == 0)
                         {
-                            Matches =
+                            matches =
                                 new Regex(@"<td class=""name""><a href=""/leagues/.*"">(.*)</a></td>").Matches(
-                                    webClient.DownloadString(LadderURL + pageNumber));
+                                    webClient.DownloadString(_ladderUrl + pageNumber));
                         }
                         else if (siteType == 1)
                         {
-                            Matches =
+                            matches =
                                 new Regex("class=\\\"ajax-tooltip shadow radius lazy\\\" alt=\\\"\\\">(.*)</a>").Matches
                                     (
                                         webClient.DownloadString(
-                                            LadderURL + "?q=analyze%2Franking%2Fpro-ism-ranking%2F1&page=" + pageNumber));
+                                            _ladderUrl + "?q=analyze%2Franking%2Fpro-ism-ranking%2F1&page=" + pageNumber));
                         }
 
                         List<string> namesList = new List<string>();
 
-                        foreach (Match singleMatch in Matches)
+                        if (matches != null)
                         {
-                            string cleanMatch = singleMatch.Groups[1].Value.Replace(" ", string.Empty);
-                            if (cleanMatch.Length < 24 && cleanMatch.Length > 4)
+                            foreach (Match singleMatch in matches)
                             {
-                                namesList.Add(RemoveDiacritics(cleanMatch));
+                                string cleanMatch = singleMatch.Groups[1].Value.Replace(" ", string.Empty);
+                                if (cleanMatch.Length < 24 && cleanMatch.Length > 4)
+                                {
+                                    namesList.Add(RemoveDiacritics(cleanMatch));
+                                }
                             }
                         }
-
-                        Invoke(
-                            (MethodInvoker) delegate()
+                            if (ltbUsernames != null)
                             {
-                                ltbUsernames.Items.AddRange(namesList.ToArray());
-                                lbCount.Text = "Usernames: " + ltbUsernames.Items.Count.ToString();
-                            });
+
+                                if (!ltbUsernames.IsHandleCreated)
+                                    ltbUsernames.CreateControl();
+                                ltbUsernames.Invoke(
+                                    (MethodInvoker) delegate { ltbUsernames.Items.AddRange(namesList.ToArray()); });
+
+                                if (!lbCount.IsHandleCreated)
+                                    lbCount.CreateControl();
+                                lbCount.Invoke(
+                                    (MethodInvoker)
+                                        delegate
+                                        {
+                                            lbCount.Text = string.Format(
+                                                "Usernames: {0}", ltbUsernames.Items.Count.ToString());
+                                        });
+                            }
                     }
                     else if (siteType == 2)
                     {
-                        string htmlsource = webClient.DownloadString(LadderURL + pageNumber + ".json");
+                        string htmlsource = webClient.DownloadString(_ladderUrl + pageNumber + ".json");
                         LoLKing jsonLoLKing = new JavaScriptSerializer().Deserialize<LoLKing>(htmlsource);
 
                         List<string> namesList = new List<string>();
 
-                        foreach (Usernames usernames in jsonLoLKing.data)
+                        foreach (Usernames usernames in jsonLoLKing.Data)
                         {
-                            string cleanMatch = usernames.name.Replace(" ", string.Empty);
+                            string cleanMatch = usernames.Name.Replace(" ", string.Empty);
                             if (cleanMatch.Length < 24 && cleanMatch.Length > 4)
                             {
                                 namesList.Add(RemoveDiacritics(cleanMatch));
                             }
                         }
 
-                                            Invoke(
-                        (MethodInvoker)delegate()
-                        {
-                            ltbUsernames.Items.AddRange(namesList.ToArray());
-                            lbCount.Text = "Usernames: " + ltbUsernames.Items.Count.ToString();
-                        });
+                        if (!ltbUsernames.IsHandleCreated)
+                            ltbUsernames.CreateControl();
+                        ltbUsernames.Invoke(
+                            (MethodInvoker)delegate { ltbUsernames.Items.AddRange(namesList.ToArray()); });
+
+                        if (!lbCount.IsHandleCreated)
+                            lbCount.CreateControl();
+                        lbCount.Invoke(
+                            (MethodInvoker)
+                                delegate
+                                {
+                                    lbCount.Text = string.Format(
+                                        "Usernames: {0}", ltbUsernames.Items.Count.ToString());
+                                });
                     }
                 }, ct);
         }
 
-        #region Form Events
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if(_cts != null)
-                _cts.Cancel();
-        }
         #endregion
 
-        static string RemoveDiacritics(string text)
-        {
-            var normalizedString = text.Normalize(NormalizationForm.FormD);
-            var stringBuilder = new StringBuilder();
-
-            foreach (var c in normalizedString)
-            {
-                var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
-                if (unicodeCategory != UnicodeCategory.NonSpacingMark)
-                {
-                    stringBuilder.Append(c);
-                }
-            }
-
-            return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
-        }
-
-        #region Controls
-        private void cbRegion_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cbSite.SelectedIndex == 0)
-            {
-                switch (cbRegion.Text)
-                {
-                    case "NA":
-                        LadderURL = "http://www.lolsummoners.com/ladders/na/";
-                        break;
-                    case "EUW":
-                        LadderURL = "http://www.lolsummoners.com/ladders/euw/";
-                        break;
-                    case "EUNE":
-                        LadderURL = "http://www.lolsummoners.com/ladders/eune/";
-                        break;
-                    case "BR":
-                        LadderURL = "http://www.lolsummoners.com/ladders/br/";
-                        break;
-                    case "LAN":
-                        LadderURL = "http://www.lolsummoners.com/ladders/lan/";
-                        break;
-                    case "LAS":
-                        LadderURL = "http://www.lolsummoners.com/ladders/las/";
-                        break;
-                    case "OCE":
-                        LadderURL = "http://www.lolsummoners.com/ladders/oce/";
-                        break;
-                    case "RU":
-                        LadderURL = "http://www.lolsummoners.com/ladders/ru/";
-                        break;
-                    case "TR":
-                        LadderURL = "http://www.lolsummoners.com/ladders/tr/";
-                        break;
-                    case "KR":
-                        LadderURL = "http://www.lolsummoners.com/ladders/kr/";
-                        break;
-                    case "GLOBAL":
-                        LadderURL = "http://www.lolsummoners.com/ladders/all/";
-                        break;
-                }
-            }
-            else if (cbSite.SelectedIndex == 1)
-            {
-                switch (cbRegion.Text)
-                {
-                    case "NA":
-                        LadderURL = "http://loldb.gameguyz.com/analyze/ranking/pro-ism-ranking/1";
-                        break;
-                    case "EUW":
-                        LadderURL = "http://loldb.gameguyz.com/analyze/ranking/pro-ism-ranking/2";
-                        break;
-                    case "EUNE":
-                        LadderURL = "http://loldb.gameguyz.com/analyze/ranking/pro-ism-ranking/3";
-                        break;
-                    case "BR":
-                        LadderURL = "http://loldb.gameguyz.com/analyze/ranking/pro-ism-ranking/4";
-                        break;
-                    case "LAN":
-                        LadderURL = "http://loldb.gameguyz.com/analyze/ranking/pro-ism-ranking/5";
-                        break;
-                    case "LAS":
-                        LadderURL = "http://loldb.gameguyz.com/analyze/ranking/pro-ism-ranking/6";
-                        break;
-                    case "OCE":
-                        LadderURL = "http://loldb.gameguyz.com/analyze/ranking/pro-ism-ranking/7";
-                        break;
-                    case "RU":
-                        LadderURL = "http://loldb.gameguyz.com/analyze/ranking/pro-ism-ranking/8";
-                        break;
-                    case "TR":
-                        LadderURL = "http://loldb.gameguyz.com/analyze/ranking/pro-ism-ranking/9";
-                        break;
-                    case "KR":
-                        LadderURL = "http://loldb.gameguyz.com/analyze/ranking/pro-ism-ranking/10";
-                        break;
-                    case "GLOBAL":
-                        cbRegion.SelectedIndex = 0;
-                        MetroMessageBox.Show(
-                            this, "LOLDB does not support GLOBAL.. :(", "Whoops!", MessageBoxButtons.OK,
-                            MessageBoxIcon.Exclamation);
-                        break;
-                }
-            }
-            else if (cbSite.SelectedIndex == 2)
-            {
-                switch (cbRegion.Text)
-                {
-                    case "NA":
-                        LadderURL = "http://lolking.net/leaderboards/wiezerzz/na/";
-                        break;
-                    case "EUW":
-                        LadderURL = "http://lolking.net/leaderboards/wiezerzz/euw/";
-                        break;
-                    case "EUNE":
-                        LadderURL = "http://lolking.net/leaderboards/wiezerzz/eune/";
-                        break;
-                    case "BR":
-                        LadderURL = "http://lolking.net/leaderboards/wiezerzz/br/";
-                        break;
-                    case "LAN":
-                        LadderURL = "http://lolking.net/leaderboards/wiezerzz/lan/";
-                        break;
-                    case "LAS":
-                        LadderURL = "http://lolking.net/leaderboards/wiezerzz/las/";
-                        break;
-                    case "OCE":
-                        LadderURL = "http://lolking.net/leaderboards/wiezerzz/oce/";
-                        break;
-                    case "RU":
-                        LadderURL = "http://lolking.net/leaderboards/wiezerzz/ru/";
-                        break;
-                    case "TR":
-                        LadderURL = "http://lolking.net/leaderboards/wiezerzz/tr/";
-                        break;
-                    case "KR":
-                        cbRegion.SelectedIndex = 0;
-                        MetroMessageBox.Show(
-                            this, "LoLKing does not support KR(Korean).. :(", "Whoops!", MessageBoxButtons.OK,
-                            MessageBoxIcon.Exclamation);
-                        break;
-                    case "GLOBAL":
-                        cbRegion.SelectedIndex = 0;
-                        MetroMessageBox.Show(
-                            this, "LoLKing does not support GLOBAL.. :(", "Whoops!", MessageBoxButtons.OK,
-                            MessageBoxIcon.Exclamation);
-                        break;
-                }   
-            }
-        }
-
-        private void lbStartPage_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (char.IsDigit(e.KeyChar) || char.IsControl(e.KeyChar) && e.KeyChar == 8)
-                e.Handled = false;
-            else
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void lbStartPage_TextChanged(object sender, EventArgs e)
-        {
-            int parsedValue;
-            if (!int.TryParse(lbStartPage.Text, out parsedValue) && lbStartPage.Text != "")
-            {
-                lbStartPage.Text = "";
-            }
-        }
-
-        private void lbStopPage_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (char.IsDigit(e.KeyChar) || char.IsControl(e.KeyChar) && e.KeyChar == 8)
-                e.Handled = false;
-            else
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void lbStopPage_TextChanged(object sender, EventArgs e)
-        {
-            int parsedValue;
-            if (!int.TryParse(lbStopPage.Text, out parsedValue) && lbStopPage.Text != "")
-            {
-                lbStopPage.Text = "";
-            }
-        }
-        #endregion
-
-        private void stopwatchTimer_Tick(object sender, EventArgs e)
-        {
-            lbTimer.Text = "Elapsed Time: " + stopwatch.Elapsed.ToString("mm\\:ss\\.ff");
-        }
-
-        private void btStop_Click(object sender, EventArgs e)
-        {
-            //Stupid visual focus problem with buttons.
-            lbCount.Focus();
-
-            Invoke((MethodInvoker)delegate()
-            { loadingSpinner.Style = MetroColorStyle.Yellow; });
-            if (_cts != null)
-                _cts.Cancel();
-        }
-
-        private void cbSite_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!string.IsNullOrEmpty(cbSite.Text))
-            {
-                curSiteID = cbSite.SelectedIndex;
-                cbRegion.Enabled = true;
-            }
-            else
-            {
-                cbRegion.Enabled = false;
-            }
-        }
-
-        private void copyToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (ltbUsernames.SelectedIndex > -1)
-            Clipboard.SetText(ltbUsernames.SelectedItem.ToString());
-        }
-
-        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if(ltbUsernames.SelectedIndex > -1)
-            ltbUsernames.Items.Remove(ltbUsernames.SelectedItem);
-        }
-
-        private void clearAllToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if(ltbUsernames.Items.Count > 0)
-                ltbUsernames.Items.Clear();
-            lbCount.Text = "Usernames: " + ltbUsernames.Items.Count.ToString();
-        }
-
-        private void metroRadioButton3_CheckedChanged(object sender, EventArgs e)
-        {
-            if (metroRadioButton3.Checked)
-                btImport.Enabled = true;
-            else
-            {
-                btImport.Enabled = false;
-            }
-        }
-
-        public static bool IsAlphaNum(string str)
-        {
-            if (string.IsNullOrEmpty(str))
-                return false;
-
-            bool conLetter = false;
-            bool conNumber = false;
-
-            for (int i = 0; i < str.Length; i++)
-            {
-                if ((char.IsLetter(str[i])))
-                conLetter = true;
-
-                if (char.IsNumber(str[i]))
-                    conNumber = true;
-            }
-
-            if (conLetter && conNumber)
-                return true;
-            else
-            {
-                return false;
-            }
-        }
-
-        private void btImport_Click(object sender, EventArgs e)
+        #region Import and Export
+        private void BtImportClick(object sender, EventArgs e)
         {
             //Stupid visual focus problem with buttons.
             lbCount.Focus();
@@ -495,7 +243,7 @@ namespace WZScraper
 
             using (OpenFileDialog ofd = new OpenFileDialog())
             {
-                ofd.Filter = "Text Files|*.txt|All Files|*.*";
+                ofd.Filter = @"Text Files|*.txt|All Files|*.*";
                 ofd.FileName = "";
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
@@ -517,7 +265,7 @@ namespace WZScraper
             }
         }
 
-        private void btExport_Click(object sender, EventArgs e)
+        private void BtExportClick(object sender, EventArgs e)
         {
             //Stupid visual focus problem with buttons.
             lbCount.Focus();
@@ -535,7 +283,7 @@ namespace WZScraper
             {
                 using (SaveFileDialog sfd = new SaveFileDialog())
                 {
-                    sfd.Filter = "Text Files|*.txt|All Files|*.*";
+                    sfd.Filter = @"Text Files|*.txt|All Files|*.*";
                     sfd.FileName = "";
                     if (sfd.ShowDialog() == DialogResult.OK)
                     {
@@ -556,7 +304,7 @@ namespace WZScraper
             {
                 using (SaveFileDialog sfd = new SaveFileDialog())
                 {
-                    sfd.Filter = "Text Files|*.txt|All Files|*.*";
+                    sfd.Filter = @"Text Files|*.txt|All Files|*.*";
                     sfd.FileName = "";
                     if (sfd.ShowDialog() == DialogResult.OK)
                     {
@@ -586,13 +334,12 @@ namespace WZScraper
                     MetroMessageBox.Show(
                         this, "You need to import a password list first.", "Error!", MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
-                    return;
                 }
                 else
                 {
                     using (SaveFileDialog sfd = new SaveFileDialog())
                     {
-                        sfd.Filter = "Text Files|*.txt|All Files|*.*";
+                        sfd.Filter = @"Text Files|*.txt|All Files|*.*";
                         sfd.FileName = "";
                         if (sfd.ShowDialog() == DialogResult.OK)
                         {
@@ -605,7 +352,7 @@ namespace WZScraper
                                         string password = password0.ToLower().Replace("%user%", username);
 
                                         if (password.Length < 24 && password.Length > 6 && IsAlphaNum(password))
-                                        writer.Write(username + ':' + password + Environment.NewLine);
+                                            writer.Write(username + ':' + password + Environment.NewLine);
                                     }
                                 }
                             }
@@ -617,5 +364,314 @@ namespace WZScraper
                 }
             }
         }
+        #endregion
+
+        #region Form Events
+        private void MainFormLoad(object sender, EventArgs e)
+        {
+            //Basic Update checker
+            Thread updateThread = new Thread(
+                delegate()
+                {
+                    string dVersion =
+                        new WebClient().DownloadString(
+                            "https://raw.githubusercontent.com/Wiezerzz/WZScraper/master/version.txt");
+                    if (Application.ProductVersion != dVersion)
+                    {
+                        MetroMessageBox.Show(
+                            this,
+                            "You have an older version. Go to: https://github.com/Wiezerzz/WZScraper/releases to download the latest version.",
+                            "Outdated!");
+                    }
+                });
+
+            updateThread.IsBackground = true;
+            updateThread.Start();
+            //---END
+        }
+
+        private void MainFormFormClosing(object sender, FormClosingEventArgs e)
+        {
+            //Cancel all threads when user presses close.
+            if(_cts != null)
+                _cts.Cancel();
+        }
+        #endregion
+
+        #region Utils
+        static string RemoveDiacritics(string text)
+        {
+            //This removes accents and weird shit from the string.
+
+            var normalizedString = text.Normalize(NormalizationForm.FormD);
+            var stringBuilder = new StringBuilder();
+
+            foreach (var c in normalizedString)
+            {
+                var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
+                if (unicodeCategory != UnicodeCategory.NonSpacingMark)
+                {
+                    stringBuilder.Append(c);
+                }
+            }
+
+            return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+        }
+
+        public static bool IsAlphaNum(string str)
+        {
+            //Check if string is AlphaNumeric(Contains letters AND numbers), This method is used cause Regex didn't work.
+
+            if (string.IsNullOrEmpty(str))
+                return false;
+
+            bool conLetter = false;
+            bool conNumber = false;
+
+            for (int i = 0; i < str.Length; i++)
+            {
+                if ((char.IsLetter(str[i])))
+                    conLetter = true;
+
+                if (char.IsNumber(str[i]))
+                    conNumber = true;
+            }
+
+            if (conLetter && conNumber)
+                return true;
+            else
+            {
+                return false;
+            }
+        }
+
+        #endregion
+
+        #region Controls
+        private void CbRegionSelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbSite.SelectedIndex == 0)
+            {
+                switch (cbRegion.Text)
+                {
+                    case "NA":
+                        _ladderUrl = "http://www.lolsummoners.com/ladders/na/";
+                        break;
+                    case "EUW":
+                        _ladderUrl = "http://www.lolsummoners.com/ladders/euw/";
+                        break;
+                    case "EUNE":
+                        _ladderUrl = "http://www.lolsummoners.com/ladders/eune/";
+                        break;
+                    case "BR":
+                        _ladderUrl = "http://www.lolsummoners.com/ladders/br/";
+                        break;
+                    case "LAN":
+                        _ladderUrl = "http://www.lolsummoners.com/ladders/lan/";
+                        break;
+                    case "LAS":
+                        _ladderUrl = "http://www.lolsummoners.com/ladders/las/";
+                        break;
+                    case "OCE":
+                        _ladderUrl = "http://www.lolsummoners.com/ladders/oce/";
+                        break;
+                    case "RU":
+                        _ladderUrl = "http://www.lolsummoners.com/ladders/ru/";
+                        break;
+                    case "TR":
+                        _ladderUrl = "http://www.lolsummoners.com/ladders/tr/";
+                        break;
+                    case "KR":
+                        _ladderUrl = "http://www.lolsummoners.com/ladders/kr/";
+                        break;
+                    case "GLOBAL":
+                        _ladderUrl = "http://www.lolsummoners.com/ladders/all/";
+                        break;
+                }
+            }
+            else if (cbSite.SelectedIndex == 1)
+            {
+                switch (cbRegion.Text)
+                {
+                    case "NA":
+                        _ladderUrl = "http://loldb.gameguyz.com/analyze/ranking/pro-ism-ranking/1";
+                        break;
+                    case "EUW":
+                        _ladderUrl = "http://loldb.gameguyz.com/analyze/ranking/pro-ism-ranking/2";
+                        break;
+                    case "EUNE":
+                        _ladderUrl = "http://loldb.gameguyz.com/analyze/ranking/pro-ism-ranking/3";
+                        break;
+                    case "BR":
+                        _ladderUrl = "http://loldb.gameguyz.com/analyze/ranking/pro-ism-ranking/4";
+                        break;
+                    case "LAN":
+                        _ladderUrl = "http://loldb.gameguyz.com/analyze/ranking/pro-ism-ranking/5";
+                        break;
+                    case "LAS":
+                        _ladderUrl = "http://loldb.gameguyz.com/analyze/ranking/pro-ism-ranking/6";
+                        break;
+                    case "OCE":
+                        _ladderUrl = "http://loldb.gameguyz.com/analyze/ranking/pro-ism-ranking/7";
+                        break;
+                    case "RU":
+                        _ladderUrl = "http://loldb.gameguyz.com/analyze/ranking/pro-ism-ranking/8";
+                        break;
+                    case "TR":
+                        _ladderUrl = "http://loldb.gameguyz.com/analyze/ranking/pro-ism-ranking/9";
+                        break;
+                    case "KR":
+                        _ladderUrl = "http://loldb.gameguyz.com/analyze/ranking/pro-ism-ranking/10";
+                        break;
+                    case "GLOBAL":
+                        cbRegion.SelectedIndex = 0;
+                        MetroMessageBox.Show(
+                            this, "LOLDB does not support GLOBAL.. :(", "Whoops!", MessageBoxButtons.OK,
+                            MessageBoxIcon.Exclamation);
+                        break;
+                }
+            }
+            else if (cbSite.SelectedIndex == 2)
+            {
+                switch (cbRegion.Text)
+                {
+                    case "NA":
+                        _ladderUrl = "http://lolking.net/leaderboards/wiezerzz/na/";
+                        break;
+                    case "EUW":
+                        _ladderUrl = "http://lolking.net/leaderboards/wiezerzz/euw/";
+                        break;
+                    case "EUNE":
+                        _ladderUrl = "http://lolking.net/leaderboards/wiezerzz/eune/";
+                        break;
+                    case "BR":
+                        _ladderUrl = "http://lolking.net/leaderboards/wiezerzz/br/";
+                        break;
+                    case "LAN":
+                        _ladderUrl = "http://lolking.net/leaderboards/wiezerzz/lan/";
+                        break;
+                    case "LAS":
+                        _ladderUrl = "http://lolking.net/leaderboards/wiezerzz/las/";
+                        break;
+                    case "OCE":
+                        _ladderUrl = "http://lolking.net/leaderboards/wiezerzz/oce/";
+                        break;
+                    case "RU":
+                        _ladderUrl = "http://lolking.net/leaderboards/wiezerzz/ru/";
+                        break;
+                    case "TR":
+                        _ladderUrl = "http://lolking.net/leaderboards/wiezerzz/tr/";
+                        break;
+                    case "KR":
+                        cbRegion.SelectedIndex = 0;
+                        MetroMessageBox.Show(
+                            this, "LoLKing does not support KR(Korean).. :(", "Whoops!", MessageBoxButtons.OK,
+                            MessageBoxIcon.Exclamation);
+                        break;
+                    case "GLOBAL":
+                        cbRegion.SelectedIndex = 0;
+                        MetroMessageBox.Show(
+                            this, "LoLKing does not support GLOBAL.. :(", "Whoops!", MessageBoxButtons.OK,
+                            MessageBoxIcon.Exclamation);
+                        break;
+                }   
+            }
+        }
+
+        private void LbStartPageKeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (char.IsDigit(e.KeyChar) || char.IsControl(e.KeyChar) && e.KeyChar == 8)
+                e.Handled = false;
+            else
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void LbStartPageTextChanged(object sender, EventArgs e)
+        {
+            int parsedValue;
+            if (!int.TryParse(lbStartPage.Text, out parsedValue) && lbStartPage.Text != "")
+            {
+                lbStartPage.Text = "";
+            }
+        }
+
+        private void LbStopPageKeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (char.IsDigit(e.KeyChar) || char.IsControl(e.KeyChar) && e.KeyChar == 8)
+                e.Handled = false;
+            else
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void LbStopPageTextChanged(object sender, EventArgs e)
+        {
+            int parsedValue;
+            if (!int.TryParse(lbStopPage.Text, out parsedValue) && lbStopPage.Text != "")
+            {
+                lbStopPage.Text = "";
+            }
+        }
+
+        private void StopwatchTimerTick(object sender, EventArgs e)
+        {
+            lbTimer.Text = string.Format("Elapsed Time: {0}", stopwatch.Elapsed.ToString("mm\\:ss\\.ff"));
+        }
+
+        private void BtStopClick(object sender, EventArgs e)
+        {
+            //Stupid visual focus problem with buttons.
+            lbCount.Focus();
+
+            Invoke((MethodInvoker)delegate { loadingSpinner.Style = MetroColorStyle.Yellow; });
+            if (_cts != null)
+                _cts.Cancel();
+        }
+
+        private void CbSiteSelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(cbSite.Text))
+            {
+                _curSiteId = cbSite.SelectedIndex;
+                cbRegion.Enabled = true;
+            }
+            else
+            {
+                cbRegion.Enabled = false;
+            }
+        }
+
+        private void CopyToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            if (ltbUsernames.SelectedIndex > -1)
+            Clipboard.SetText(ltbUsernames.SelectedItem.ToString());
+        }
+
+        private void DeleteToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            if(ltbUsernames.SelectedIndex > -1)
+            ltbUsernames.Items.Remove(ltbUsernames.SelectedItem);
+        }
+
+        private void ClearAllToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            if(ltbUsernames.Items.Count > 0)
+                ltbUsernames.Items.Clear();
+            lbCount.Text = string.Format("Usernames: {0}", ltbUsernames.Items.Count.ToString());
+        }
+
+        private void MetroRadioButton3CheckedChanged(object sender, EventArgs e)
+        {
+            if (metroRadioButton3.Checked)
+                btImport.Enabled = true;
+            else
+            {
+                btImport.Enabled = false;
+            }
+        }
+        #endregion
     }
 }

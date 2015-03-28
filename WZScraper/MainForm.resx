@@ -204,8 +204,26 @@
     <value>14</value>
   </data>
   <metadata name="contextMenuListBox.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>155, 17</value>
+    <value>17, 56</value>
   </metadata>
+  <data name="copyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>118, 22</value>
+  </data>
+  <data name="copyToolStripMenuItem.Text" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="deleteToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>118, 22</value>
+  </data>
+  <data name="deleteToolStripMenuItem.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="clearAllToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>118, 22</value>
+  </data>
+  <data name="clearAllToolStripMenuItem.Text" xml:space="preserve">
+    <value>Clear All</value>
+  </data>
   <data name="contextMenuListBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>119, 70</value>
   </data>
@@ -366,7 +384,7 @@
     <value>9</value>
   </data>
   <metadata name="stopwatchTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
+    <value>1357, 17</value>
   </metadata>
   <data name="btStop.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -452,24 +470,6 @@
   <data name="&gt;&gt;cbSite.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="copyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 22</value>
-  </data>
-  <data name="copyToolStripMenuItem.Text" xml:space="preserve">
-    <value>Copy</value>
-  </data>
-  <data name="deleteToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 22</value>
-  </data>
-  <data name="deleteToolStripMenuItem.Text" xml:space="preserve">
-    <value>Delete</value>
-  </data>
-  <data name="clearAllToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 22</value>
-  </data>
-  <data name="clearAllToolStripMenuItem.Text" xml:space="preserve">
-    <value>Clear All</value>
-  </data>
   <data name="metroRadioButton1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -495,7 +495,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;metroRadioButton1.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="metroRadioButton2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -522,7 +522,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;metroRadioButton2.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="metroRadioButton3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -549,7 +549,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;metroRadioButton3.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="btImport.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -576,7 +576,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btImport.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="btExport.Location" type="System.Drawing.Point, System.Drawing">
     <value>189, 205</value>
@@ -600,7 +600,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btExport.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -1877,12 +1877,6 @@
   <data name="$this.Text" xml:space="preserve">
     <value>WZScraper - by Wiezerzz</value>
   </data>
-  <data name="&gt;&gt;stopwatchTimer.Name" xml:space="preserve">
-    <value>stopwatchTimer</value>
-  </data>
-  <data name="&gt;&gt;stopwatchTimer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;copyToolStripMenuItem.Name" xml:space="preserve">
     <value>copyToolStripMenuItem</value>
   </data>
@@ -1900,6 +1894,12 @@
   </data>
   <data name="&gt;&gt;clearAllToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;stopwatchTimer.Name" xml:space="preserve">
+    <value>stopwatchTimer</value>
+  </data>
+  <data name="&gt;&gt;stopwatchTimer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>MainForm</value>

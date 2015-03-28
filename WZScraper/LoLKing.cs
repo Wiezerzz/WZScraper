@@ -4,12 +4,12 @@ namespace WZScraper
 {
     public class LoLKing
     {
-        public List<Usernames> data { get; set; }
+        public List<Usernames> Data { get; set; }
     }
 
     public class Usernames
     {
-        public string name { get; set; }
+        public string Name { get; set; }
     }
 
 }
