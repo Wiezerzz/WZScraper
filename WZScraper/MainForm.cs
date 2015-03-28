@@ -31,6 +31,7 @@ namespace WZScraper
 
         private void btScrape_Click(object sender, EventArgs e)
         {
+            MessageBox.Show(Application.ProductVersion);
             //Stupid visual focus problem with buttons.
             lbCount.Focus();
 
