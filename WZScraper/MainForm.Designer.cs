@@ -53,6 +53,7 @@ namespace WZScraper
             this.metroRadioButton3 = new MetroFramework.Controls.MetroRadioButton();
             this.btImport = new MetroFramework.Controls.MetroButton();
             this.btExport = new MetroFramework.Controls.MetroButton();
+            this.btAdd = new MetroFramework.Controls.MetroButton();
             this.contextMenuListBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -265,6 +266,16 @@ namespace WZScraper
             this.btExport.UseStyleColors = true;
             this.btExport.Click += new System.EventHandler(this.BtExportClick);
             // 
+            // btAdd
+            // 
+            this.btAdd.FontWeight = MetroFramework.MetroButtonWeight.Regular;
+            resources.ApplyResources(this.btAdd, "btAdd");
+            this.btAdd.Name = "btAdd";
+            this.btAdd.Style = MetroFramework.MetroColorStyle.Teal;
+            this.btAdd.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.btAdd.UseSelectable = true;
+            this.btAdd.Click += new System.EventHandler(this.btAdd_Click);
+            // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
@@ -273,6 +284,7 @@ namespace WZScraper
             this.BackImagePadding = new System.Windows.Forms.Padding(0, 13, 57, 0);
             this.BackLocation = MetroFramework.Forms.BackLocation.TopRight;
             this.BackMaxSize = 50;
+            this.Controls.Add(this.btAdd);
             this.Controls.Add(this.btExport);
             this.Controls.Add(this.btImport);
             this.Controls.Add(this.metroRadioButton3);
@@ -326,6 +338,7 @@ namespace WZScraper
         private MetroFramework.Controls.MetroRadioButton metroRadioButton3;
         private MetroFramework.Controls.MetroButton btImport;
         private MetroFramework.Controls.MetroButton btExport;
+        private MetroFramework.Controls.MetroButton btAdd;
     }
 }
 

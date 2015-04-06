@@ -172,7 +172,7 @@ namespace WZScraper
                             foreach (Match singleMatch in matches)
                             {
                                 string cleanMatch = singleMatch.Groups[1].Value.Replace(" ", string.Empty);
-                                if (cleanMatch.Length < 24 && cleanMatch.Length > 4)
+                                if (cleanMatch.Length <= 24 && cleanMatch.Length >= 4)
                                 {
                                     namesList.Add(RemoveDiacritics(cleanMatch));
                                 }
@@ -207,7 +207,7 @@ namespace WZScraper
                         foreach (Usernames usernames in jsonLoLKing.Data)
                         {
                             string cleanMatch = usernames.Name.Replace(" ", string.Empty);
-                            if (cleanMatch.Length < 24 && cleanMatch.Length > 4)
+                            if (cleanMatch.Length <= 24 && cleanMatch.Length >= 4)
                             {
                                 namesList.Add(RemoveDiacritics(cleanMatch));
                             }
@@ -252,7 +252,14 @@ namespace WZScraper
                         for (string str = passStreamReader.ReadLine(); !string.IsNullOrEmpty(str); str = passStreamReader.ReadLine())
                         {
                             str = str.Trim();
-                            if (str.Length < 24 && str.Length > 6 && IsAlphaNum(str))
+                            if (!str.ToLower().Contains("%user%"))
+                            {
+                                if (str.Length <= 16 && str.Length >= 6 && IsAlphaNum(str))
+                                {
+                                    passList.Add(str);
+                                }
+                            }
+                            else if (str.ToLower().Contains("%user%"))
                             {
                                 passList.Add(str);
                             }
@@ -351,7 +358,7 @@ namespace WZScraper
                                     {
                                         string password = password0.ToLower().Replace("%user%", username);
 
-                                        if (password.Length < 24 && password.Length > 6 && IsAlphaNum(password))
+                                        if (password.Length <= 16 && password.Length >= 6 && IsAlphaNum(password))
                                             writer.Write(username + ':' + password + Environment.NewLine);
                                     }
                                 }
@@ -375,12 +382,12 @@ namespace WZScraper
                 {
                     string dVersion =
                         new WebClient().DownloadString(
-                            "https://raw.githubusercontent.com/Wiezerzz/WZScraper/master/version.txt");
+                            "https://raw.githubusercontent.com/Wiezerzz/WZScraper/master/version.txt").Trim();
                     if (Application.ProductVersion != dVersion)
                     {
                         MetroMessageBox.Show(
                             this,
-                            "You have an older version. Go to: https://github.com/Wiezerzz/WZScraper/releases to download the latest version.",
+                            "You have an older version(" + Application.ProductVersion + "). Go to: https://github.com/Wiezerzz/WZScraper/releases to download the latest version(" + dVersion + ").",
                             "Outdated!");
                     }
                 });
@@ -673,5 +680,32 @@ namespace WZScraper
             }
         }
         #endregion
+
+        private void btAdd_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog ofd = new OpenFileDialog())
+            {
+                ofd.Filter = @"Text Files|*.txt|All Files|*.*";
+                ofd.FileName = "";
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    var lines = File.ReadLines(ofd.FileName);
+                    foreach (string str in lines)
+                    {
+                        string str1 = str.Trim();
+                        if (!string.IsNullOrEmpty(str1) && str1.Length <= 24 && str1.Length >= 4)
+                        {
+                            ltbUsernames.Items.Add(str1);
+                        }
+                    }
+
+                    lbCount.Text = "Usernames: " + ltbUsernames.Items.Count;
+                        MetroMessageBox.Show(
+                            this, "All usernames have been imported!", "Imported!", MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+                    
+                }
+            }
+        }
     }
 }
