@@ -74,12 +74,47 @@ namespace WZScraper
                 return;
             }
 
+            if (IsSiteOffline())
+                return;
+
             //Enable the stopwatch obviously.
             stopwatchTimer.Enabled = true;
 
             //Start the async thread.
             Thread mainThread = new Thread(StartScraping);
             mainThread.Start();
+        }
+
+        private bool IsSiteOffline()
+        {
+            HttpStatusCode copyStatusCode;
+            try
+            {
+                HttpWebRequest webRequest = (HttpWebRequest) WebRequest.Create(_ladderUrl);
+                webRequest.AllowAutoRedirect = false;
+                HttpWebResponse response = (HttpWebResponse) webRequest.GetResponse();
+                copyStatusCode = response.StatusCode;
+            }
+            catch (WebException we)
+            {
+                copyStatusCode = ((HttpWebResponse)we.Response).StatusCode;
+            }
+
+            Console.WriteLine((int)copyStatusCode);
+            if ((int)copyStatusCode != 200 && (int)copyStatusCode != 301)
+            {
+                DialogResult dialogResult = MetroMessageBox.Show(
+                    this,
+                    "It appears that " + cbSite.Text + " might be offline. (" + (int)copyStatusCode + "/" + copyStatusCode.ToString() + ")" + Environment.NewLine + Environment.NewLine +
+                    "Do you want to continue? (If you get no usernames than the website is offline.", "Site offline?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+
+                if (dialogResult == DialogResult.Yes)
+                    return false;
+                else if(dialogResult == DialogResult.No)
+                    return true;
+            }
+
+            return false;
         }
 
         async void StartScraping()
@@ -457,7 +492,7 @@ namespace WZScraper
         #region Controls
         private void CbRegionSelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cbSite.SelectedIndex == 0)
+            if (_curSiteId == 0)
             {
                 switch (cbRegion.Text)
                 {
@@ -496,7 +531,7 @@ namespace WZScraper
                         break;
                 }
             }
-            else if (cbSite.SelectedIndex == 1)
+            else if (_curSiteId == 1)
             {
                 switch (cbRegion.Text)
                 {
@@ -538,7 +573,7 @@ namespace WZScraper
                         break;
                 }
             }
-            else if (cbSite.SelectedIndex == 2)
+            else if (_curSiteId == 2)
             {
                 switch (cbRegion.Text)
                 {
@@ -643,6 +678,7 @@ namespace WZScraper
             if (!string.IsNullOrEmpty(cbSite.Text))
             {
                 _curSiteId = cbSite.SelectedIndex;
+                CbRegionSelectedIndexChanged(this, EventArgs.Empty); //fixed.
                 cbRegion.Enabled = true;
             }
             else
