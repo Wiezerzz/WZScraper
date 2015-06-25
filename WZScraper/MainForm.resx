@@ -177,7 +177,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cbRegion.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>17</value>
   </data>
   <data name="btScrape.Location" type="System.Drawing.Point, System.Drawing">
     <value>23, 331</value>
@@ -201,11 +201,29 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btScrape.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>16</value>
   </data>
   <metadata name="contextMenuListBox.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 56</value>
+    <value>155, 56</value>
   </metadata>
+  <data name="copyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>118, 22</value>
+  </data>
+  <data name="copyToolStripMenuItem.Text" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="deleteToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>118, 22</value>
+  </data>
+  <data name="deleteToolStripMenuItem.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="clearAllToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>118, 22</value>
+  </data>
+  <data name="clearAllToolStripMenuItem.Text" xml:space="preserve">
+    <value>Clear All</value>
+  </data>
   <data name="contextMenuListBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>119, 70</value>
   </data>
@@ -240,25 +258,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;ltbUsernames.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
-  <data name="copyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 22</value>
-  </data>
-  <data name="copyToolStripMenuItem.Text" xml:space="preserve">
-    <value>Copy</value>
-  </data>
-  <data name="deleteToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 22</value>
-  </data>
-  <data name="deleteToolStripMenuItem.Text" xml:space="preserve">
-    <value>Delete</value>
-  </data>
-  <data name="clearAllToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 22</value>
-  </data>
-  <data name="clearAllToolStripMenuItem.Text" xml:space="preserve">
-    <value>Clear All</value>
+    <value>15</value>
   </data>
   <data name="lbCount.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -354,7 +354,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lbSeperator.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>18</value>
   </data>
   <data name="lbTimer.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -384,7 +384,7 @@
     <value>10</value>
   </data>
   <metadata name="stopwatchTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>1357, 17</value>
+    <value>17, 56</value>
   </metadata>
   <data name="btStop.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -435,7 +435,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;loadingSpinner.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>14</value>
   </data>
   <data name="cbSite.ItemHeight" type="System.Int32, mscorlib">
     <value>23</value>
@@ -468,7 +468,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cbSite.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="metroRadioButton1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -495,7 +495,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;metroRadioButton1.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="metroRadioButton2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -504,13 +504,13 @@
     <value>196, 154</value>
   </data>
   <data name="metroRadioButton2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>187, 15</value>
+    <value>199, 15</value>
   </data>
   <data name="metroRadioButton2.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
   </data>
   <data name="metroRadioButton2.Text" xml:space="preserve">
-    <value>Export user:user[numbers(123)]</value>
+    <value>Export user:user[numbers(12345)]</value>
   </data>
   <data name="&gt;&gt;metroRadioButton2.Name" xml:space="preserve">
     <value>metroRadioButton2</value>
@@ -522,7 +522,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;metroRadioButton2.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="metroRadioButton3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -549,13 +549,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;metroRadioButton3.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="btImport.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
   <data name="btImport.Location" type="System.Drawing.Point, System.Drawing">
-    <value>295, 205</value>
+    <value>295, 225</value>
   </data>
   <data name="btImport.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 35</value>
@@ -579,7 +579,7 @@
     <value>3</value>
   </data>
   <data name="btExport.Location" type="System.Drawing.Point, System.Drawing">
-    <value>189, 205</value>
+    <value>189, 225</value>
   </data>
   <data name="btExport.Size" type="System.Drawing.Size, System.Drawing">
     <value>103, 35</value>
@@ -624,7 +624,38 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btAdd.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
+  </data>
+  <data name="metroRadioButton4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="metroRadioButton4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="metroRadioButton4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>196, 196</value>
+  </data>
+  <data name="metroRadioButton4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>165, 15</value>
+  </data>
+  <data name="metroRadioButton4.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
+  </data>
+  <data name="metroRadioButton4.Text" xml:space="preserve">
+    <value>Export user:pass (user:user)</value>
+  </data>
+  <data name="&gt;&gt;metroRadioButton4.Name" xml:space="preserve">
+    <value>metroRadioButton4</value>
+  </data>
+  <data name="&gt;&gt;metroRadioButton4.Type" xml:space="preserve">
+    <value>MetroFramework.Controls.MetroRadioButton, MetroFramework, Version=1.3.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
+  </data>
+  <data name="&gt;&gt;metroRadioButton4.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;metroRadioButton4.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

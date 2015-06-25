@@ -54,6 +54,7 @@ namespace WZScraper
             this.btImport = new MetroFramework.Controls.MetroButton();
             this.btExport = new MetroFramework.Controls.MetroButton();
             this.btAdd = new MetroFramework.Controls.MetroButton();
+            this.metroRadioButton4 = new MetroFramework.Controls.MetroRadioButton();
             this.contextMenuListBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -276,6 +277,14 @@ namespace WZScraper
             this.btAdd.UseSelectable = true;
             this.btAdd.Click += new System.EventHandler(this.btAdd_Click);
             // 
+            // metroRadioButton4
+            // 
+            resources.ApplyResources(this.metroRadioButton4, "metroRadioButton4");
+            this.metroRadioButton4.Name = "metroRadioButton4";
+            this.metroRadioButton4.Style = MetroFramework.MetroColorStyle.Teal;
+            this.metroRadioButton4.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.metroRadioButton4.UseSelectable = true;
+            // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
@@ -287,16 +296,17 @@ namespace WZScraper
             this.Controls.Add(this.btAdd);
             this.Controls.Add(this.btExport);
             this.Controls.Add(this.btImport);
+            this.Controls.Add(this.metroRadioButton4);
             this.Controls.Add(this.metroRadioButton3);
             this.Controls.Add(this.metroRadioButton2);
             this.Controls.Add(this.metroRadioButton1);
             this.Controls.Add(this.cbSite);
-            this.Controls.Add(this.loadingSpinner);
             this.Controls.Add(this.btStop);
             this.Controls.Add(this.lbTimer);
             this.Controls.Add(this.lbStopPage);
             this.Controls.Add(this.lbStartPage);
             this.Controls.Add(this.lbCount);
+            this.Controls.Add(this.loadingSpinner);
             this.Controls.Add(this.ltbUsernames);
             this.Controls.Add(this.btScrape);
             this.Controls.Add(this.cbRegion);
@@ -339,6 +349,7 @@ namespace WZScraper
         private MetroFramework.Controls.MetroButton btImport;
         private MetroFramework.Controls.MetroButton btExport;
         private MetroFramework.Controls.MetroButton btAdd;
+        private MetroFramework.Controls.MetroRadioButton metroRadioButton4;
     }
 }
 

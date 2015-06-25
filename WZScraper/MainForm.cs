@@ -361,10 +361,12 @@ namespace WZScraper
                                 writer.Write(listboxItem + ':' + listboxItem + '1' + Environment.NewLine);
                                 writer.Write(listboxItem + ':' + listboxItem + "12" + Environment.NewLine);
                                 writer.Write(listboxItem + ':' + listboxItem + "123" + Environment.NewLine);
+                                writer.Write(listboxItem + ':' + listboxItem + "1234" + Environment.NewLine);
+                                writer.Write(listboxItem + ':' + listboxItem + "12345" + Environment.NewLine);								
                             }
                         }
                         MetroMessageBox.Show(
-                            this, "Username:pass[numbers(123)] list has been exported!", "Completed!", MessageBoxButtons.OK,
+                            this, "Username:pass[numbers(12345)] list has been exported!", "Completed!", MessageBoxButtons.OK,
                             MessageBoxIcon.Information);
                     }
                 }
@@ -402,6 +404,27 @@ namespace WZScraper
                                 this, "Username:pass list has been exported!", "Completed!", MessageBoxButtons.OK,
                                 MessageBoxIcon.Information);
                         }
+                    }
+                }
+            }
+            else if (metroRadioButton4.Checked)
+            {
+                using (SaveFileDialog sfd = new SaveFileDialog())
+                {
+                    sfd.Filter = @"Text Files|*.txt|All Files|*.*";
+                    sfd.FileName = "";
+                    if (sfd.ShowDialog() == DialogResult.OK)
+                    {
+                        using (StreamWriter writer = new StreamWriter(sfd.FileName))
+                        {
+                            foreach (string listboxItem in ltbUsernames.Items)
+                            {
+                                writer.Write(listboxItem + ':' + listboxItem + Environment.NewLine);
+                            }
+                        }
+                        MetroMessageBox.Show(
+                            this, "username:username list has been exported!", "Completed!", MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
                     }
                 }
             }
